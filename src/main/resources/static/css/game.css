@@ -1,0 +1,319 @@
+/* ========================================
+   贪吃蛇游戏 — 样式表
+   ======================================== */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background-color: #0a0a1a;
+    color: #e0e0e0;
+    font-family: 'Segoe UI', 'Microsoft YaHei', sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    overflow: hidden;
+}
+
+#game-container {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+}
+
+/* ===== 游戏画布 ===== */
+#game-canvas {
+    border: 2px solid #2a2a4a;
+    border-radius: 4px;
+    background-color: #111128;
+    image-rendering: pixelated;
+    box-shadow: 0 0 30px rgba(50, 100, 255, 0.15);
+}
+
+/* ===== 覆盖层 ===== */
+.overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.75);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 10;
+    border-radius: 4px;
+}
+
+.overlay.hidden {
+    display: none;
+}
+
+#overlay-content {
+    text-align: center;
+    padding: 40px;
+    background: #1a1a2e;
+    border: 1px solid #3a3a5a;
+    border-radius: 12px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+}
+
+#overlay-title {
+    font-size: 2.5em;
+    margin-bottom: 16px;
+    color: #4CAF50;
+}
+
+#overlay-message {
+    font-size: 1.1em;
+    color: #aaa;
+    margin-bottom: 24px;
+}
+
+.final-score {
+    margin-top: 16px;
+    font-size: 1.5em;
+    color: #FFD700;
+}
+
+/* ===== 排行榜 ===== */
+#leaderboard {
+    max-height: 300px;
+    overflow-y: auto;
+}
+
+#leaderboard h3 {
+    font-size: 1.1em;
+    color: #FFD700;
+    margin-bottom: 8px;
+}
+
+#leaderboard-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.9em;
+}
+
+#leaderboard-table th,
+#leaderboard-table td {
+    padding: 4px 10px;
+    border-bottom: 1px solid #2a2a4a;
+}
+
+#leaderboard-table th {
+    color: #888;
+    font-weight: normal;
+    text-transform: uppercase;
+    font-size: 0.8em;
+}
+
+#leaderboard-table td {
+    color: #ccc;
+}
+
+#leaderboard-table tr:first-child td {
+    color: #FFD700;
+    font-weight: bold;
+}
+
+/* ===== 按钮 ===== */
+.game-btn {
+    padding: 10px 24px;
+    font-size: 1em;
+    font-family: inherit;
+    color: #fff;
+    background: linear-gradient(135deg, #2a6b3a, #1a4a2a);
+    border: 1px solid #3a8b4a;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.game-btn:hover {
+    background: linear-gradient(135deg, #3a8b4a, #2a6b3a);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(50, 150, 50, 0.3);
+}
+
+.game-btn:active {
+    transform: translateY(0);
+}
+
+/* ===== HUD 信息栏 ===== */
+#hud {
+    display: flex;
+    gap: 30px;
+    padding: 8px 24px;
+    background: #1a1a2e;
+    border: 1px solid #2a2a4a;
+    border-radius: 6px;
+}
+
+.hud-item {
+    text-align: center;
+}
+
+.hud-label {
+    display: block;
+    font-size: 0.8em;
+    color: #888;
+    text-transform: uppercase;
+}
+
+.hud-value {
+    display: block;
+    font-size: 1.4em;
+    font-weight: bold;
+    color: #4CAF50;
+}
+
+#speed-indicator {
+    color: #aaa;
+    transition: color 0.2s;
+}
+
+#speed-indicator.boost {
+    color: #FF5722;
+    animation: pulse 0.3s infinite alternate;
+}
+
+@keyframes pulse {
+    from { transform: scale(1); }
+    to { transform: scale(1.2); }
+}
+
+/* ===== 控制按钮区 ===== */
+#controls {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+#btn-pause {
+    background: linear-gradient(135deg, #3a3a6a, #2a2a4a);
+    border-color: #5a5a8a;
+}
+
+#btn-pause:hover {
+    background: linear-gradient(135deg, #5a5a8a, #3a3a6a);
+}
+
+#btn-restart {
+    background: linear-gradient(135deg, #6a3a2a, #4a2a1a);
+    border-color: #8a5a3a;
+}
+
+#btn-restart:hover {
+    background: linear-gradient(135deg, #8a5a3a, #6a3a2a);
+}
+
+#btn-leaderboard {
+    background: linear-gradient(135deg, #7a6a00, #5a4a00);
+    border-color: #aa8a00;
+}
+
+#btn-leaderboard:hover {
+    background: linear-gradient(135deg, #9a8a00, #7a6a00);
+}
+
+/* ===== 排行榜面板 ===== */
+#leaderboard-panel {
+    width: 100%;
+    max-width: 400px;
+    background: #1a1a2e;
+    border: 1px solid #3a3a5a;
+    border-radius: 8px;
+    padding: 16px;
+    margin-top: 8px;
+}
+
+#leaderboard-panel h3 {
+    color: #FFD700;
+    margin-bottom: 12px;
+    text-align: center;
+}
+
+#leaderboard-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.9em;
+}
+
+#leaderboard-table th,
+#leaderboard-table td {
+    padding: 6px 10px;
+    border-bottom: 1px solid #2a2a4a;
+    text-align: center;
+}
+
+#leaderboard-table th {
+    color: #888;
+    font-weight: normal;
+    text-transform: uppercase;
+    font-size: 0.8em;
+}
+
+#leaderboard-table td {
+    color: #ccc;
+}
+
+#leaderboard-table tr:first-child td {
+    color: #FFD700;
+    font-weight: bold;
+}
+
+#leaderboard-table tbody tr:hover {
+    background: rgba(255, 255, 255, 0.05);
+}
+
+#btn-close-leaderboard {
+    display: block;
+    margin: 10px auto 0;
+}
+
+/* ===== 操作提示 ===== */
+#tips {
+    text-align: center;
+    font-size: 0.85em;
+    color: #666;
+    line-height: 1.8;
+}
+
+#tips kbd {
+    display: inline-block;
+    padding: 2px 8px;
+    background: #2a2a4a;
+    border: 1px solid #4a4a6a;
+    border-radius: 3px;
+    font-family: inherit;
+    font-size: 0.9em;
+}
+
+/* ===== 连接状态 ===== */
+#connection-status {
+    font-size: 0.8em;
+    padding: 4px 12px;
+    border-radius: 12px;
+}
+
+#connection-status.connected {
+    color: #4CAF50;
+    background: rgba(76, 175, 80, 0.1);
+}
+
+#connection-status.disconnected {
+    color: #f44336;
+    background: rgba(244, 67, 54, 0.1);
+}
+
+#connection-status.connecting {
+    color: #FF9800;
+    background: rgba(255, 152, 0, 0.1);
+}

@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>贪吃蛇 - Snake Game</title>
+    <link rel="stylesheet" href="/css/game.css">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🐍</text></svg>">
+</head>
+<body>
+    <div id="game-container">
+        <!-- 游戏画布 -->
+        <canvas id="game-canvas"></canvas>
+
+        <!-- 覆盖层 -->
+        <div id="overlay" class="overlay">
+            <div id="overlay-content">
+                <h1 id="overlay-title">🐍 贪吃蛇</h1>
+                <p id="overlay-message">按下「开始游戏」或按 空格键 开始</p>
+                <button id="overlay-btn" class="game-btn">开始游戏</button>
+                <div id="overlay-score" class="final-score"></div>
+                <div id="leaderboard" style="display:none; margin-top:16px; text-align:left;">
+                    <h3>🏆 排行榜</h3>
+                    <table id="leaderboard-table">
+                        <thead><tr><th>#</th><th>玩家</th><th>分数</th><th>长度</th></tr></thead>
+                        <tbody></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- HUD 信息栏 -->
+        <div id="hud">
+            <div class="hud-item">
+                <span class="hud-label">分数</span>
+                <span id="score" class="hud-value">0</span>
+            </div>
+            <div class="hud-item">
+                <span class="hud-label">最高分</span>
+                <span id="high-score" class="hud-value">0</span>
+            </div>
+            <div class="hud-item">
+                <span class="hud-label">速度</span>
+                <span id="speed-indicator" class="hud-value">⚡</span>
+            </div>
+        </div>
+
+        <!-- 控制按钮 -->
+        <div id="controls">
+            <button id="btn-start" class="game-btn" title="开始游戏">▶ 开始</button>
+            <button id="btn-pause" class="game-btn" title="暂停/继续">⏯ 暂停</button>
+            <button id="btn-restart" class="game-btn" title="重新开始">🔄 重新开始</button>
+            <button id="btn-leaderboard" class="game-btn leaderboard-btn" title="查看排行榜">🏆 排行榜</button>
+        </div>
+
+        <!-- 排行榜面板 -->
+        <div id="leaderboard-panel" style="display:none;">
+            <h3>🏆 排行榜 TOP 10</h3>
+            <table id="panel-leaderboard-table">
+                <thead><tr><th>#</th><th>玩家</th><th>分数</th><th>长度</th><th>时间</th></tr></thead>
+                <tbody></tbody>
+            </table>
+            <button id="btn-close-leaderboard" class="game-btn" style="margin-top:10px;">关闭</button>
+        </div>
+
+        <!-- 操作提示 -->
+        <div id="tips">
+            <p>🎮 <strong>操作说明：</strong></p>
+            <p>↑ ↓ ← → 方向键控制移动 | <kbd>Shift</kbd> 键加速 | <kbd>Space</kbd> 暂停/继续</p>
+        </div>
+
+        <!-- 连接状态 -->
+        <div id="connection-status" class="disconnected">🔴 未连接</div>
+    </div>
+
+    <!-- JavaScript（使用原生 WebSocket，无需第三方库） -->
+    <script src="/js/audio-manager.js?v=3"></script>
+    <script src="/js/input-handler.js?v=3"></script>
+    <script src="/js/game-client.js?v=3"></script>
+</body>
+</html>
