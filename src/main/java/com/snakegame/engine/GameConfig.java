@@ -48,10 +48,45 @@ public record GameConfig(
     }
 
     /**
-     * 创建默认配置（20×15 网格，初始长度3，正常100ms，加速50ms）。
+     * 创建默认/标准配置（20×15 网格，初始长度3，正常200ms，加速100ms）。
      */
     public static GameConfig defaultConfig() {
         // 正常移速 200ms/格，加速 100ms/格（为原 1/2 速度）
         return new GameConfig(20, 15, 3, 200, 100, 10, 30, 5);
+    }
+
+    /**
+     * 小窗口预设：15×10 网格 (3:2)。
+     */
+    public static GameConfig smallConfig() {
+        return new GameConfig(15, 10, 3, 200, 100, 10, 30, 5);
+    }
+
+    /**
+     * 标准窗口预设：20×15 网格 (4:3)，与 defaultConfig 相同。
+     */
+    public static GameConfig standardConfig() {
+        return defaultConfig();
+    }
+
+    /**
+     * 大窗口预设：30×20 网格 (3:2)。
+     */
+    public static GameConfig largeConfig() {
+        return new GameConfig(30, 20, 3, 200, 100, 10, 30, 5);
+    }
+
+    /**
+     * 根据名称获取预设配置。
+     *
+     * @param sizeName "SMALL" | "STANDARD" | "LARGE"（大小写不敏感）
+     * @return 对应的 GameConfig，未知名称返回 standardConfig
+     */
+    public static GameConfig fromSizeName(String sizeName) {
+        return switch (sizeName.toUpperCase()) {
+            case "SMALL" -> smallConfig();
+            case "LARGE" -> largeConfig();
+            default -> standardConfig();
+        };
     }
 }

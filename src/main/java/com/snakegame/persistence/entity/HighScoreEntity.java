@@ -1,33 +1,24 @@
 package com.snakegame.persistence.entity;
 
-import jakarta.persistence.*;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
+
 import java.time.LocalDateTime;
 
 /**
- * 最高分实体类。
- * 使用 JPA 持久化到 H2 数据库。
+ * 最高分文档。
+ * 使用 Spring Data MongoDB 持久化到内嵌 MongoDB。
  */
-@Entity
-@Table(name = "high_scores")
+@Document(collection = "high_scores")
 public class HighScoreEntity {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private String id;
 
-    @Column(nullable = false)
     private String playerName;
-
-    @Column(nullable = false)
     private int score;
-
-    @Column(nullable = false)
     private int snakeLength;
-
-    @Column(nullable = false)
     private int foodEaten;
-
-    @Column(nullable = false)
     private LocalDateTime createdAt;
 
     public HighScoreEntity() {
@@ -43,8 +34,8 @@ public class HighScoreEntity {
     }
 
     // Getters and Setters
-    public Long getId() { return id; }
-    public void setId(Long id) { this.id = id; }
+    public String getId() { return id; }
+    public void setId(String id) { this.id = id; }
     public String getPlayerName() { return playerName; }
     public void setPlayerName(String playerName) { this.playerName = playerName; }
     public int getScore() { return score; }

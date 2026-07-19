@@ -9,7 +9,7 @@
 }
 
 body {
-    background-color: #0a0a1a;
+    background-color: #06060f;
     color: #e0e0e0;
     font-family: 'Segoe UI', 'Microsoft YaHei', sans-serif;
     display: flex;
@@ -17,6 +17,18 @@ body {
     align-items: center;
     min-height: 100vh;
     overflow: hidden;
+    /* 多层渐变背景：点阵 + 中心光晕 */
+    background-image:
+        radial-gradient(circle, rgba(80, 120, 220, 0.06) 1px, transparent 1px),
+        radial-gradient(ellipse at 50% 30%, rgba(20, 30, 80, 0.5) 0%, transparent 60%),
+        radial-gradient(ellipse at 20% 80%, rgba(40, 20, 60, 0.3) 0%, transparent 50%),
+        radial-gradient(ellipse at 80% 80%, rgba(20, 40, 80, 0.3) 0%, transparent 50%);
+    background-size:
+        28px 28px,
+        100% 100%,
+        100% 100%,
+        100% 100%;
+    background-position: 0 0;
 }
 
 #game-container {
@@ -24,7 +36,7 @@ body {
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 10px;
+    gap: 8px;
 }
 
 /* ===== 游戏画布 ===== */
@@ -33,7 +45,7 @@ body {
     border-radius: 4px;
     background-color: #111128;
     image-rendering: pixelated;
-    box-shadow: 0 0 30px rgba(50, 100, 255, 0.15);
+    box-shadow: 0 0 60px rgba(50, 100, 255, 0.2), 0 0 120px rgba(30, 50, 150, 0.1);
 }
 
 /* ===== 覆盖层 ===== */
@@ -124,8 +136,8 @@ body {
 
 /* ===== 按钮 ===== */
 .game-btn {
-    padding: 10px 24px;
-    font-size: 1em;
+    padding: 8px 20px;
+    font-size: 0.95em;
     font-family: inherit;
     color: #fff;
     background: linear-gradient(135deg, #2a6b3a, #1a4a2a);
@@ -148,8 +160,8 @@ body {
 /* ===== HUD 信息栏 ===== */
 #hud {
     display: flex;
-    gap: 30px;
-    padding: 8px 24px;
+    gap: 24px;
+    padding: 5px 20px;
     background: #1a1a2e;
     border: 1px solid #2a2a4a;
     border-radius: 6px;
@@ -191,7 +203,7 @@ body {
 /* ===== 控制按钮区 ===== */
 #controls {
     display: flex;
-    gap: 10px;
+    gap: 8px;
     flex-wrap: wrap;
     justify-content: center;
 }
@@ -221,6 +233,42 @@ body {
 
 #btn-leaderboard:hover {
     background: linear-gradient(135deg, #9a8a00, #7a6a00);
+}
+
+/* ===== 窗口大小选择器 ===== */
+#size-selector {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 4px 14px;
+    background: #1a1a2e;
+    border: 1px solid #2a2a4a;
+    border-radius: 6px;
+}
+
+.size-label {
+    font-size: 0.8em;
+    color: #888;
+    text-transform: uppercase;
+    margin-right: 4px;
+}
+
+.size-btn {
+    padding: 6px 14px;
+    font-size: 0.85em;
+    background: linear-gradient(135deg, #2a2a4a, #1a1a2e);
+    border-color: #4a4a6a;
+}
+
+.size-btn:hover {
+    background: linear-gradient(135deg, #3a3a6a, #2a2a4a);
+    box-shadow: 0 2px 8px rgba(100, 100, 200, 0.3);
+}
+
+.size-btn.active {
+    background: linear-gradient(135deg, #3a6a8a, #2a4a6a);
+    border-color: #5a8aaa;
+    box-shadow: 0 0 10px rgba(80, 150, 220, 0.3);
 }
 
 /* ===== 排行榜面板 ===== */
@@ -281,9 +329,9 @@ body {
 /* ===== 操作提示 ===== */
 #tips {
     text-align: center;
-    font-size: 0.85em;
-    color: #666;
-    line-height: 1.8;
+    font-size: 0.75em;
+    color: #555;
+    line-height: 1.6;
 }
 
 #tips kbd {
@@ -298,9 +346,9 @@ body {
 
 /* ===== 连接状态 ===== */
 #connection-status {
-    font-size: 0.8em;
-    padding: 4px 12px;
-    border-radius: 12px;
+    font-size: 0.7em;
+    padding: 2px 10px;
+    border-radius: 10px;
 }
 
 #connection-status.connected {

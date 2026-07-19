@@ -22,6 +22,7 @@ class GameClient {
         this.highScore = 0;
         this.gameState = 'READY';
         this.speedBoost = false;
+        this.currentSize = 'STANDARD';  // 当前窗口尺寸
 
         // ===== WebSocket =====
         this.ws = null;
@@ -61,10 +62,24 @@ class GameClient {
             document.getElementById('leaderboard-panel').style.display = 'none';
         });
 
+        // 窗口大小切换按钮
+        document.querySelectorAll('.size-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                const size = btn.dataset.size;
+                this.setSize(size);
+            });
+        });
+
         // 绑定键盘事件
         window.inputHandler.onDirection = (dir) => this.sendDirection(dir);
         window.inputHandler.onSpeedBoost = (active) => this.sendSpeedBoost(active);
-        window.inputHandler.onPauseToggle = () => this.togglePause();
+        window.inputHandler.onPauseToggle = () => {
+            if (this.gameState === 'READY' || this.gameState === 'GAME_OVER') {
+                this.startGame();
+            } else {
+                this.togglePause();
+            }
+        };
         window.inputHandler.onStart = () => {
             if (this.gameState === 'READY' || this.gameState === 'GAME_OVER') {
                 this.startGame();
@@ -83,11 +98,11 @@ class GameClient {
 
     /** 自适应画布大小 */
     resizeCanvas() {
-        const maxWidth = Math.min(window.innerWidth - 40, 800);
-        const maxHeight = Math.min(window.innerHeight - 280, 500);
+        const maxWidth = window.innerWidth - 60;
+        const maxHeight = window.innerHeight - 200;
         const cellByWidth = Math.floor(maxWidth / this.gridWidth);
         const cellByHeight = Math.floor(maxHeight / this.gridHeight);
-        this.cellSize = Math.min(cellByWidth, cellByHeight, 40);
+        this.cellSize = Math.min(cellByWidth, cellByHeight, 60);
         this.cellSize = Math.max(this.cellSize, 16);
 
         this.canvas.width = this.gridWidth * this.cellSize;
@@ -112,6 +127,7 @@ class GameClient {
                 console.log('WebSocket 已连接');
                 this.connected = true;
                 this.reconnectAttempts = 0;
+                this.currentSize = 'STANDARD';
                 this.setConnectionStatus('connected', '🟢 已连接');
             };
 
@@ -159,8 +175,9 @@ class GameClient {
                 this.gridHeight = msg.gridHeight || 15;
                 this.gameState = msg.gameState || 'READY';
                 this.resizeCanvas();
+                this.updateSizeButtonState();
                 this.showOverlay('ready');
-                console.log('会话初始化完成:', this.gameId);
+                console.log('会话初始化完成:', this.gameId, `${this.gridWidth}×${this.gridHeight}`);
                 break;
 
             case 'STATE':
@@ -272,6 +289,26 @@ class GameClient {
     restartGame() {
         this.sendCommand('RESTART');
         this.hideOverlay();
+    }
+
+    /** 切换窗口大小 */
+    setSize(sizeName) {
+        if (sizeName === this.currentSize) return; // 已经是该尺寸
+        if (!this.ws || this.ws.readyState !== WebSocket.OPEN) {
+            console.warn('WebSocket 未连接，无法切换尺寸');
+            return;
+        }
+        this.currentSize = sizeName;
+        this.send({ action: 'SET_SIZE', size: sizeName });
+        // 服务器会返回新的 INIT，handleMessage 会处理 gridWidth/gridHeight 更新和 canvas 重绘
+        this.hideOverlay();
+    }
+
+    /** 根据当前网格尺寸更新大小按钮的 active 状态 */
+    updateSizeButtonState() {
+        document.querySelectorAll('.size-btn').forEach(btn => {
+            btn.classList.toggle('active', btn.dataset.size === this.currentSize);
+        });
     }
 
     // ===== 状态处理 =====

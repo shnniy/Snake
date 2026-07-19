@@ -66,4 +66,66 @@ class GameConfigTest {
         assertThrows(IllegalArgumentException.class, () ->
             new GameConfig(20, 15, 3, 100, 50, 10, 30, 0));
     }
+
+    // ===== 预设尺寸测试 =====
+
+    @Test
+    @DisplayName("fromSizeName SMALL 应返回 15×10")
+    void fromSizeNameSmall() {
+        GameConfig config = GameConfig.fromSizeName("SMALL");
+        assertEquals(15, config.gridWidth());
+        assertEquals(10, config.gridHeight());
+    }
+
+    @Test
+    @DisplayName("fromSizeName STANDARD 应返回 20×15")
+    void fromSizeNameStandard() {
+        GameConfig config = GameConfig.fromSizeName("STANDARD");
+        assertEquals(20, config.gridWidth());
+        assertEquals(15, config.gridHeight());
+    }
+
+    @Test
+    @DisplayName("fromSizeName LARGE 应返回 30×20")
+    void fromSizeNameLarge() {
+        GameConfig config = GameConfig.fromSizeName("LARGE");
+        assertEquals(30, config.gridWidth());
+        assertEquals(20, config.gridHeight());
+    }
+
+    @Test
+    @DisplayName("fromSizeName 未知名称应回退到标准配置")
+    void fromSizeNameUnknownReturnsStandard() {
+        GameConfig config = GameConfig.fromSizeName("INVALID");
+        assertEquals(20, config.gridWidth());
+        assertEquals(15, config.gridHeight());
+    }
+
+    @Test
+    @DisplayName("fromSizeName 应大小写不敏感")
+    void fromSizeNameCaseInsensitive() {
+        assertEquals(15, GameConfig.fromSizeName("small").gridWidth());
+        assertEquals(20, GameConfig.fromSizeName("Standard").gridWidth());
+        assertEquals(30, GameConfig.fromSizeName("Large").gridWidth());
+    }
+
+    @Test
+    @DisplayName("smallConfig 应返回正确的小窗口配置")
+    void smallConfigCorrect() {
+        GameConfig config = GameConfig.smallConfig();
+        assertEquals(15, config.gridWidth());
+        assertEquals(10, config.gridHeight());
+        assertEquals(3, config.initialSnakeLength());
+        assertEquals(200, config.normalTickMs());
+    }
+
+    @Test
+    @DisplayName("largeConfig 应返回正确的大窗口配置")
+    void largeConfigCorrect() {
+        GameConfig config = GameConfig.largeConfig();
+        assertEquals(30, config.gridWidth());
+        assertEquals(20, config.gridHeight());
+        assertEquals(3, config.initialSnakeLength());
+        assertEquals(200, config.normalTickMs());
+    }
 }

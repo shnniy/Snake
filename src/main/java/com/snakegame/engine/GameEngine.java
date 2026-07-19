@@ -56,7 +56,7 @@ public class GameEngine {
     }
 
     /**
-     * 初始化游戏：放置食物，将状态设为 READY。
+     * 初始化游戏：重置蛇位置、放置食物，将状态设为 READY。
      */
     public void init() {
         stopGameLoop();
@@ -65,10 +65,11 @@ public class GameEngine {
         this.foodEatenCount = 0;
         this.directionQueue.clear();
 
-        // 重新生成蛇
-        Position startHead = new Position(config.gridWidth() / 4, config.gridHeight() / 2);
-        // 不能直接替换 snake 引用，只能重建。为简化，我们重置分数并重新生成食物
         scoreTracker.reset();
+
+        // 重新生成蛇到起始位置
+        Position startHead = new Position(config.gridWidth() / 4, config.gridHeight() / 2);
+        reinitSnake(startHead);
 
         // 放置食物
         food.spawn(snake.occupiedCells(), grid);
